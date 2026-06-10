@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loft Algérie | Gestion Locative & Airbnb Premium</title>
+    <style>
+        /* --- Reset & Variables --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        :root {
+            --black: #111111;     /* Noir mat profond */
+            --gold: #d4af37;      /* Doré premium équilibré */
+            --gold-light: #f3e5ab;/* Doré clair / reflets */
+            --beige: #f9f6f0;     /* Beige doux et chaleureux pour les fonds */
+            --white: #ffffff;     /* Blanc pur */
+            --text: #2d2d2d;
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+        }
+
+        body {
+            color: var(--text);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* --- Navigation --- */
+        header {
+            background-color: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+        }
+        .logo {
+            color: var(--white);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: var(--gold);
+            font-weight: 300;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* --- Style Bouton Liquid Glass iOS --- */
+        .btn-liquid-glass {
+            position: relative;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.8) 0%, rgba(180, 140, 30, 0.9) 100%);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            border-radius: 30px; /* Style arrondi capsule iOS */
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 4px 15px rgba(212, 175, 55, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Reflet liquide interne */
+        .btn-liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.1) 100%);
+            border-radius: 30px 30px 40px 40px / 30px 30px 20px 20px;
+            pointer-events: none;
+        }
+
+        .btn-liquid-glass:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 
+                0 8px 25px rgba(212, 175, 55, 0.5),
+                inset 0 2px 8px rgba(255, 255, 255, 0.6),
+                inset 0 -1px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, rgba(230, 195, 75, 0.9) 0%, rgba(200, 160, 40, 1) 100%);
+        }
+
+        .btn-liquid-glass:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Variante sombre du bouton liquide */
+        .btn-liquid-glass.dark {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+        }
+        .btn-liquid-glass.dark:hover {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.95) 0%, rgba(20, 20, 20, 1) 100%);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.5),
+                inset 0 1px 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-nav {
+            padding: 0.6rem 1.4rem;
+            font-size: 0.9rem;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(17, 17, 17, 0.8), rgba(17, 17, 17, 0.88)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 8rem 2rem 4rem 2rem;
+            margin-top: 65px;
+        }
+        .hero-content {
+            max-width: 850px;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+        .hero h1 span {
+            color: var(--gold);
+        }
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            color: #dddddd;
+            font-weight: 300;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        /* --- Sections Standards --- */
+        section {
+            padding: 6rem 2rem;
+        }
+        .bg-beige {
+            background-color: var(--beige);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            color: var(--black);
+            font-weight: 700;
+            margin-bottom: 3.5rem;
+            letter-spacing: -0.5px;
+        }
+        .section-title span {
+            color: var(--gold);
+        }
+
+        /* --- Features / Atouts --- */
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+        .feature-card {
+            background-color: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(214, 175, 55, 0.1);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), #b48c14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--black);
+            font-size: 1.3rem;
+        }
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* --- Formulaire d'Estimation --- */
+        .estimation-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input, .form-group select {
+            padding: 0.9rem;
+            border: 1px solid #e2e8f0;
+            background-color: #fafafa;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--gold);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+        .form-full {
+            grid-column: 1 / -1;
+        }
+        .btn-submit {
+            width: 100%;
+            border: none;
+            padding: 1.1rem;
+            font-size: 1.05rem;
+        }
+
+        /* --- Tarifs --- */
+        .pricing-box {
+            max-width: 520px;
+            margin: 0 auto;
+            background: var(--black);
+            color: var(--white);
+            border-radius: 24px;
+            text-align: center;
+            padding: 4rem 2.5rem;
+            position: relative;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .pricing-badge {
+            background: linear-gradient(135deg, var(--gold), #b48c14);
+            color: var(--white);
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.4rem 2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+        .pricing-box h3 {
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+        }
+        .price {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin: 1rem 0;
+        }
+        .price span {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #aaa;
+        }
+        .pricing-box > p {
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0 3rem 0;
+            text-align: left;
+            display: inline-block;
+        }
+        .pricing-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #eee;
+            font-size: 0.95rem;
+        }
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .footer-links a {
+            color: #888888;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.4rem; }
+            .cta-buttons { flex-direction: column; gap: 1rem; }
+            section { padding: 4rem 1.5rem; }
+            .estimation-container { padding: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bar de Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Loft<span>Algérie</span></div>
+            <ul class="nav-links">
+                <li><a href="#atouts">Nos Atouts</a></li>
+                <li><a href="#tarifs">Tarifs</a></li>
+                <li><a href="#estimation" class="btn-liquid-glass btn-nav">Estimer mes revenus</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Votre propriété d'exception à Alger mérite une gestion <span>Haut de Gamme</span>.</h1>
+            <p>Loft Algérie prend soin de votre appartement ou villa. Gestion Airbnb complète, conciergerie privée et revenus locatifs maximisés.</p>
+            <div class="cta-buttons">
+                <a href="#estimation" class="btn-liquid-glass">Estimer mes revenus</a>
+                <a href="#atouts" class="btn-liquid-glass dark">Découvrir l'expérience</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Atouts -->
+    <section id="atouts" class="bg-beige">
+        <h2 class="section-title">L'Expérience <span>Loft Algérie</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Rendement Optimisé</h3>
+                <p>Nos algorithmes de tarification ajustent vos prix en temps réel pour vous garantir les meilleurs revenus du marché algérois.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔑</div>
+                <h3>Tranquillité Absolue</h3>
+                <p>De la remise des clés au ménage de standing hôtelier, nous prenons absolument tout en charge. Vous n'avez rien à faire.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👑</div>
+                <h3>Service Signature</h3>
+                <p>Un accueil personnalisé et une assistance 24/7 pour vos voyageurs, assurant des notes 5 étoiles et un statut d'élite.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Formulaire d'Estimation -->
+    <section id="estimation">
+        <h2 class="section-title">Simulateur de <span>Revenus</span></h2>
+        <div class="estimation-container">
+            <form onsubmit="event.preventDefault(); alert('Demande reçue. Un conseiller Loft Algérie vous contactera sous 24h.');">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Nom Complet</label>
+                        <input type="text" id="name" placeholder="Ex: Slimane Rahmani" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Adresse Email</label>
+                        <input type="email" id="email" placeholder="Ex: contact@exemple.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quartier">Localisation à Alger</label>
+                        <select id="quartier" required>
+                            <option value="">Sélectionnez un secteur</option>
+                            <option value="hydra">Hydra</option>
+                            <option value="sidi-yahia">Sidi Yahia</option>
+                            <option value="el-biar">El Biar</option>
+                            <option value="alger-centre">Alger Centre</option>
+                            <option value="autre">Autre secteur premium</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chambres">Type de bien</label>
+                        <select id="chambres" required>
+                            <option value="studio">Loft / Studio / F1</option>
+                            <option value="f2">Appartement F2</option>
+                            <option value="f3">Appartement F3</option>
+                            <option value="f4+">Grand Appartement / Villa</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full">
+                        <label for="phone">Numéro de Téléphone (WhatsApp bienvenu)</label>
+                        <input type="tel" id="phone" placeholder="Ex: +33 6 00 00 00 00 ou +213 ..." required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-liquid-glass btn-submit">Lancer la simulation gratuite</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Section Tarifs -->
+    <section id="tarifs" class="bg-beige">
+        <h2 class="section-title">Notre <span>Tarif</span> unique</h2>
+        <div class="pricing-box">
+            <div class="pricing-badge">Prestige All-Inclusive</div>
+            <h3>Gestion Complète</h3>
+            <div class="price">20%<span> / par nuitée</span></div>
+            <p>Aucun frais fixe. Nous nous rémunérons uniquement à la performance, lorsque votre bien génère des revenus.</p>
+            <ul class="pricing-features">
+                <li>Création d'annonces de standing & shooting photo</li>
+                <li>Sélection rigoureuse des profils voyageurs</li>
+                <li>Maintenance technique et assistance urgences 24/7</li>
+                <li>Service de blanchisserie et ménage professionnel</li>
+                <li>Gestion des formalités et accueil physique</li>
+            </ul>
+            <a href="#estimation" class="btn-liquid-glass" style="display: inline-flex; width: 100%;">Confier mon projet</a>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">Loft<span>Algérie</span></div>
+            <p style="color: #666; font-size: 0.9rem;">&copy; 2026 Loft Algérie. Immobilier & Conciergerie Privée de Prestige.</p>
+            <ul class="footer-links">
+                <li><a href="#">Confidentialité</a></li>
+                <li><a href="#">Contact Privé</a></li>
+                <li><a href="#tarifs">Barème</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>
